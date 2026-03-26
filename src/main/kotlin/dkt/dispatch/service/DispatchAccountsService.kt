@@ -5,6 +5,7 @@ import dkt.dispatch.dto.service.CreateAccountServiceRequest
 import dkt.dispatch.dto.service.CreateAccountServiceResponse
 import dkt.dispatch.repository.AccountEntity
 import dkt.dispatch.repository.DispatchAccountsRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
@@ -12,11 +13,12 @@ import java.util.*
 @Service
 class DispatchAccountsService(
     private val accountsRepository: DispatchAccountsRepository,
+    private val passwordEncoder: PasswordEncoder,
 ) {
 
     fun createAccount(request: CreateAccountServiceRequest): CreateAccountServiceResponse? {
 
-        val passwordHash = request.password.hashCode().toString()
+        val passwordHash = passwordEncoder.encode(request.password)!! // should this throw an exception?
         val encryptedNote = encryptNote(request.note ?: "")
         val loyaltyTier = request.loyaltyTier ?: LoyaltyTier.Bronze
 
