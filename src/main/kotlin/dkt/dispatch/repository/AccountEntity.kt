@@ -1,6 +1,7 @@
 package dkt.dispatch.repository
 
 import dkt.dispatch.dto.LoyaltyTier
+import dkt.dispatch.dto.api.GerAccountApiResponse
 import jakarta.persistence.*
 import java.time.Instant
 import java.util.*
@@ -36,3 +37,13 @@ class AccountEntity(
     @Column(name = "updated_at", nullable = false)
     val updatedAt: Instant,
 )
+
+fun AccountEntity.toAccountResponse(): GerAccountApiResponse {
+    return GerAccountApiResponse(
+        id = id,
+        email = email,
+        fullName = fullName,
+        loyaltyTier = loyaltyTier,
+        preferredLocation = preferredLocation
+    )
+}

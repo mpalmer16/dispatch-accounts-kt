@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class DispatchAccountsService(
@@ -50,5 +51,10 @@ class DispatchAccountsService(
             createdAt = newAccount.createdAt,
             updatedAt = newAccount.updatedAt,
         )
+    }
+
+    fun getAccountById(accountId: String): AccountEntity? {
+        val id = UUID.fromString(accountId)
+        return accountsRepository.findById(id).getOrNull()
     }
 }
